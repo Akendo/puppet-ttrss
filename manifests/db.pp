@@ -18,13 +18,13 @@ class ttrss::db (
       password => $db_password,
       host     => $db_host,
       grant    => ['all'],
-    }
+    } ->
     exec {"import schema":
       command     => "/usr/bin/mysql -u${db_user} -p'$db_password' -D ${db_name} < $sql",
       logoutput   => true,
       refreshonly => true,
-      require     => Database_grant["${db_user}@${db_host}/${db_name}"],
-      subscribe   => Database[$db_name],
+      require     => Mysql::Db[$db_name],
+      subscribe   => Mysql::Db[$db_name],
     }
   }
 }
